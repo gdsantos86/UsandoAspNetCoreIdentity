@@ -24,6 +24,19 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+//Criação de usuário e perfis iniciais
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Usuario>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Perfil>>();
+
+    GeracaoDeUsuariosEPerfisIniciais gerador = new(roleManager, userManager);
+    gerador.GerarPerfis();
+    gerador.GerarUsuarios();
+}
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
